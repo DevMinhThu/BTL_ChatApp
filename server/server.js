@@ -1,20 +1,21 @@
 const express = require("express");
 const app = express();
 
-app.use(express.static("public"));
-
-const server = require("http").Server(app);
+const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
 // socket io listen connect
 io.on("connection", (socket) => {
+  // log user connected
+  console.log("User connected " + socket.id);
+
   socket.on("message", ({ name, message }) => {
     io.emit("message", { name, message });
   });
 });
 
-server.listen(3000, () => {
-  console.log("Server running on port 3000");
+server.listen((port = 8080), () => {
+  console.log(`Server running on port ${port}`);
 });
 
 // var arrUsers = [""];
