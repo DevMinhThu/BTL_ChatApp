@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 
 const server = require("http").createServer(app);
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, { cors: { origin: "*" } });
 
 // socket io listen connect
 io.on("connection", (socket) => {
@@ -12,6 +12,10 @@ io.on("connection", (socket) => {
   socket.on("message", ({ name, message }) => {
     io.emit("message", { name, message });
   });
+});
+
+app.get("/demo", (req, res) => {
+  res.send("Hello");
 });
 
 server.listen((port = 8080), () => {
